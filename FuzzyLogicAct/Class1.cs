@@ -15,11 +15,15 @@ namespace FuzzyLogicAct
             double temperature = 15.5; // degrees
             double humidity = 80.0; // percentage
 
+            Console.WriteLine("== USER INPUT == ");
+            Console.WriteLine($"Temperature: {temperature}°C");
+            Console.WriteLine($"Humidity: {humidity}%");
+
             SugenoMethod(temperature, humidity);
 
         }
 
-        static void SugenoMethod(double temperature, double humidity)
+        public static void SugenoMethod(double temperature, double humidity)
         {
             double tempLow = TriangularMembership(temperature, 10, 15, 20);
             double tempMid = TriangularMembership(temperature, 15, 25, 35);
@@ -47,7 +51,7 @@ namespace FuzzyLogicAct
             //print here results
         }
 
-        static void MamdaniMethod(double temperature, double humidity)
+        public static void MamdaniMethod(double temperature, double humidity)
         {
             // 1. fuzzification
             double tempLow = TriangularMembership(temperature, 10, 15, 20);
