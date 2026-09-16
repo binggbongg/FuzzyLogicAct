@@ -10,17 +10,24 @@ namespace FuzzyLogicAct
     {
         static void Main(string[] args)
         {
-            // Sophia add the print stuff plz
 
-            double temperature = 15.5; // degrees
-            double humidity = 80.0; // percentage
+            //double temperature = 15.5; // degrees
+            //double humidity = 80.0; // percentage
+
+            // SAMPLE VALUES FOR TESTING
+
+            double soilMoisture = 0; 
+            double sunlightInput = 0;
+            double airTempInput = 0;
+
+            // might transfer this line to after the user presses the button
 
             Console.WriteLine("== USER INPUT == ");
-            Console.WriteLine($"Temperature: {temperature}°C");
-            Console.WriteLine($"Humidity: {humidity}%");
+            Console.WriteLine($"Soil Moisture: {soilMoisture}%");
+            Console.WriteLine($"Sunlight: {sunlightInput}");
+            Console.WriteLine($"Air Temperature: {airTempInput}°C");
 
-            SugenoMethod(temperature, humidity);
-
+            //SugenoMethod(soilMoisture, sunlightInput, airTempInput);
         }
 
         public static void SugenoMethod(double temperature, double humidity)
@@ -49,6 +56,8 @@ namespace FuzzyLogicAct
             if (denominator > 0) crispOutput = numerator / denominator;
 
             //print here results
+            Console.WriteLine(" == OUTPUT OF SUGENO METHOD == ");
+            Console.WriteLine(crispOutput);
         }
 
         public static void MamdaniMethod(double temperature, double humidity)
@@ -105,6 +114,8 @@ namespace FuzzyLogicAct
                 }
 
                 // print results
+                Console.WriteLine(" == OUTPUT OF MAMDANI METHOD == ");
+                Console.WriteLine(crispOutput);
             }
         }
 

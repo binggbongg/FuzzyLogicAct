@@ -21,30 +21,62 @@ namespace FuzzyLogicAct
 
         private void btnSugeno_Click(object sender, EventArgs e)
         {
-            //SugenoMethod();
+            double soilMoistureInput = double.Parse(textBoxSoilMoisture.Text);
+            double sunlightInput = double.Parse(textBoxSunlight.Text);
+            double airTempInput = double.Parse(textBoxAirTemp.Text);
+
+            //SugenoMethod(soilMoistureInput, sunlightInput, airTempInput);
+
+            //richTextBoxOuput.Text = $"Soil Moisture: {soilMoistureInput}%\nSunlight: {sunlightInput}\nAir Temperature: {airTempInput}°C\n\n== OUTPUT OF SUGENO METHOD ==\n{SugenoMethod(soilMoistureInput, sunlightInput, airTempInput)}";
         }
 
         private void btnMamdani_Click(object sender, EventArgs e)
         {
-            //MamdaniMethod();
+            double soilMoistureInput = double.Parse(textBoxSoilMoisture.Text);
+            double sunlightInput = double.Parse(textBoxSunlight.Text);
+            double airTempInput = double.Parse(textBoxAirTemp.Text);
+
+            //MamdaniMethod(soilMoistureInput, sunlightInput, airTempInput);
+
+            //richTextBoxOuput.Text = $"Soil Moisture: {soilMoistureInput}%\nSunlight: {sunlightInput}\nAir Temperature: {airTempInput}°C\n\n== OUTPUT OF MAMDANI METHOD ==\n{MamdaniMethod(soilMoistureInput, sunlightInput, airTempInput)}";
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        //private void label1_Click(object sender, EventArgs e)
+        //{
+
+        //}
+
+        //private void label1_Click_1(object sender, EventArgs e)
+        //{
+
+        //}
+
+        //private void label2_Click(object sender, EventArgs e)
+        //{
+
+        //}
+
+        //private void label4_Click(object sender, EventArgs e)
+        //{
+
+        //}
+
+        private void textBoxSoilMoisture_TextChanged(object sender, EventArgs e)
         {
 
         }
 
-        private void label1_Click_1(object sender, EventArgs e)
+        private void textBoxSunlight_TextChanged(object sender, EventArgs e)
         {
 
         }
 
-        private void label2_Click(object sender, EventArgs e)
+        private void textBoxAirTemp_TextChanged(object sender, EventArgs e)
         {
 
         }
 
-        private void label4_Click(object sender, EventArgs e)
+        private void richTextBoxOuput_TextChanged(object sender, EventArgs e)
         {
 
         }
