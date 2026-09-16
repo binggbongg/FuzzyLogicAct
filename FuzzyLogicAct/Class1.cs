@@ -15,6 +15,12 @@ namespace FuzzyLogicAct
             double temperature = 15.5; // degrees
             double humidity = 80.0; // percentage
 
+            SugenoMethod(temperature, humidity);
+
+        }
+
+        static void SugenoMethod(double temperature, double humidity)
+        {
             double tempLow = TriangularMembership(temperature, 10, 15, 20);
             double tempMid = TriangularMembership(temperature, 15, 25, 35);
             double tempHigh = TriangularMembership(temperature, 30, 35, 40);
@@ -38,12 +44,70 @@ namespace FuzzyLogicAct
             double crispOutput = 0.0;
             if (denominator > 0) crispOutput = numerator / denominator;
 
+            //print here results
+        }
+
+        static void MamdaniMethod(double temperature, double humidity)
+        {
+            // 1. fuzzification
+            double tempLow = TriangularMembership(temperature, 10, 15, 20);
+            double tempMed = TriangularMembership(temperature, 15, 25, 35);
+            double tempHigh = TriangularMembership(temperature, 30, 35, 40);
+
+            double humLow = TriangularMembership(humidity, 0, 25, 50);
+            double humHigh = TriangularMembership(humidity, 40, 75, 100);
+
+            double sumNumerator = 0.0;
+            double sumDenominator = 0.0;
+
+            // 2. rule eval
+            double rule1_strength = Math.Max(tempHigh, humHigh); // OR operation
+            double rule2_strength = Math.Min(tempMed, humLow); // AND operation
+            double rule3 = tempLow;
+
+            // 3. IMPLICATION, AGGREGATION & DEFUZZIFICATION (Center of Gravity)
+            // We evaluate the output universe of discourse (Fan Speed: 0% to 100%) 
+            // across discrete integration steps to find the geometric centroid
+
+            double step = 0.5; // Integration step size for accuracy
+            for (double y = 0.0; y <= 100.0; y += step)
+            {
+
+                // Define output membership functions for Fan Speed (Slow, Medium, Fast)
+                double outSlow = TriangularMembership(y, 0.0, 0.0, 50.0);
+                double outMed = TriangularMembership(y, 20.0, 50.0, 80.0);
+                double outFast = TriangularMembership(y, 50.0, 100.0, 100.0);
+
+
+                // Implication: Clip each output fuzzy set by its rule firing strength using Min
+                double clippedSlow = Math.Min(rule3, outSlow);
+                double clippedMed = Math.Min(rule2_strength, outMed);
+                double clippedFast = Math.Min(rule1_strength, outFast);
+
+
+                // Aggregation: Combine all clipped output sets using Max (Union operator)
+                double aggregatedY = Math.Max(clippedSlow, Math.Max(clippedMed, clippedFast));
+
+                // Accumulate for Center of Gravity (Centroid) calculation:
+                // Centroid = Integral(y * u(y)) / Integral(u(y))sumNumerator += y * aggregatedY * step;
+
+                sumDenominator += aggregatedY * step;
+
+                double crispOutput = 0.0;
+
+                if (sumDenominator > 0.0)
+                { 
+                    crispOutput = sumNumerator / sumDenominator;
+                }
+
+                // print results
+            }
         }
 
         // x = input val, a = left foot, b = peak, c = right foot
         static double TriangularMembership(double x, double a, double b, double c)
         {
-            if (x <= a && x >= c) return 0.0;
+            if (x <= a || x >= c) return 0.0;
             if (x == b) return 1.0;
             if (x > a && x < b) return (x - a) / (b - a);
 
