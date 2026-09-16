@@ -30,27 +30,39 @@ namespace FuzzyLogicAct
             //SugenoMethod(soilMoisture, sunlightInput, airTempInput);
         }
 
-        public static void SugenoMethod(double temperature, double humidity)
+        public static void SugenoMethod(double soilMoisture, double lightIntensity, double airTemperature)
         {
-            double tempLow = TriangularMembership(temperature, 10, 15, 20);
-            double tempMid = TriangularMembership(temperature, 15, 25, 35);
-            double tempHigh = TriangularMembership(temperature, 30, 35, 40);
+            // 1. Fuzzification
+            // Soil Moisture (Scale: 0 to 40)
+            double lowMoisture = TriangularMembership(soil_moisture, 0, 15, 20);
+            double medMoisture = TriangularMembership(soil_moisture, 15, 25, 35);
+            double highMoisture = TriangularMembership(soil_moisture, 30, 35, 40);
 
-            double humLow = TriangularMembership(humidity, 0, 25, 50);
-            double humHigh = TriangularMembership(humidity, 40, 75, 100);
+            // Light Intensity (Scale: 0 to 100)
+            double lowIntensity = TriangularMembership(light_intensity, 0, 20, 40);
+            double medIntensity = TriangularMembership(light_intensity, 30, 50, 75);
+            double highIntensity = TriangularMembership(light_intensity, 60, 85, 100);
 
-            // 2. rule evaluation for the fan speed
-            double rule1_strength = Math.Max(tempHigh, humHigh); // OR operation
-            double rule2_strength = Math.Min(tempMid, humLow); // AND operation
-            double rule3 = tempLow;
+            // Air Temperature (Scale: 0 to 50°C)
+            double lowTemp = TriangularMembership(air_temp, 10, 18, 25);
+            double medTemp = TriangularMembership(air_temp, 20, 28, 36);
+            double highTemp = TriangularMembership(air_temp, 30, 40, 50);
 
-            // 3. defuzzification (weighted average / centroid approximation)
-            double cSlow = 20.0;
-            double cMed = 60.0;
+            // 2. rule evaluation for water pump / irrigation
+            // high demand: if soil moisture is low OR (temp is high AND light is High)
+            double rule1_strength = Math.Max(lowMoisture, Math.Min(highTemp, highIntensity);
+            // moderate demand: if soil moisture is med and temp medium
+            double rule2_strength = Math.Min(medMoisture, medTemp);
+            // low demand: is soil moisture is high or (temp is low and light is low)
+            double rule3_strength = Math.Max(highMoisture, Math.Min(lowTemp, lowIntensity);
+
+            // 3. defuzzification (weighted average)
+            double cSlow = 10.0;
+            double cMed = 50.0;
             double cFast = 100.0;
 
-            double numerator = (rule3 * cSlow) + (rule2_strength * cMed) + (rule1_strength * cFast);
-            double denominator = rule3 + rule2_strength + rule1_strength;
+            double numerator = (rule3_strength * cSlow) + (rule2_strength * cMed) + (rule1_strength * cFast);
+            double denominator = rule3_strength + rule2_strength + rule1_strength;
 
             double crispOutput = 0.0;
             if (denominator > 0) crispOutput = numerator / denominator;
@@ -60,40 +72,52 @@ namespace FuzzyLogicAct
             Console.WriteLine(crispOutput);
         }
 
-        public static void MamdaniMethod(double temperature, double humidity)
+        public static void MamdaniMethod(double soilMoisture, double lightIntensity, double airTemperature)
         {
-            // 1. fuzzification
-            double tempLow = TriangularMembership(temperature, 10, 15, 20);
-            double tempMed = TriangularMembership(temperature, 15, 25, 35);
-            double tempHigh = TriangularMembership(temperature, 30, 35, 40);
+            // 1. Fuzzification
+            // Soil Moisture (Scale: 0 to 40)
+            double lowMoisture = TriangularMembership(soil_moisture, 0, 15, 20);
+            double medMoisture = TriangularMembership(soil_moisture, 15, 25, 35);
+            double highMoisture = TriangularMembership(soil_moisture, 30, 35, 40);
 
-            double humLow = TriangularMembership(humidity, 0, 25, 50);
-            double humHigh = TriangularMembership(humidity, 40, 75, 100);
+            // Light Intensity (Scale: 0 to 100)
+            double lowIntensity = TriangularMembership(light_intensity, 0, 20, 40);
+            double medIntensity = TriangularMembership(light_intensity, 30, 50, 75);
+            double highIntensity = TriangularMembership(light_intensity, 60, 85, 100);
+
+            // Air Temperature (Scale: 0 to 50°C)
+            double lowTemp = TriangularMembership(air_temp, 10, 18, 25);
+            double medTemp = TriangularMembership(air_temp, 20, 28, 36);
+            double highTemp = TriangularMembership(air_temp, 30, 40, 50);
+
+            // 2. rule evaluation for water pump / irrigation
+            // high demand: if soil moisture is low OR (temp is high AND light is High)
+            double rule1_strength = Math.Max(lowMoisture, Math.Min(highTemp, highIntensity);
+            // moderate demand: if soil moisture is med and temp medium
+            double rule2_strength = Math.Min(medMoisture, medTemp);
+            // low demand: is soil moisture is high or (temp is low and light is low)
+            double rule3_strength = Math.Max(highMoisture, Math.Min(lowTemp, lowIntensity);
+
+            // 3. Mamdani implication, aggregation, and defuzzification
+            // slow: 0% to 40%
+            // med: 20%, peak 50%, 70%
+            // high: 60%, peak 100%
 
             double sumNumerator = 0.0;
-            double sumDenominator = 0.0;
-
-            // 2. rule eval
-            double rule1_strength = Math.Max(tempHigh, humHigh); // OR operation
-            double rule2_strength = Math.Min(tempMed, humLow); // AND operation
-            double rule3 = tempLow;
-
-            // 3. IMPLICATION, AGGREGATION & DEFUZZIFICATION (Center of Gravity)
-            // We evaluate the output universe of discourse (Fan Speed: 0% to 100%) 
-            // across discrete integration steps to find the geometric centroid
-
+            double sumDenominator = 0.0
             double step = 0.5; // Integration step size for accuracy
+
             for (double y = 0.0; y <= 100.0; y += step)
             {
 
                 // Define output membership functions for Fan Speed (Slow, Medium, Fast)
-                double outSlow = TriangularMembership(y, 0.0, 0.0, 50.0);
-                double outMed = TriangularMembership(y, 20.0, 50.0, 80.0);
-                double outFast = TriangularMembership(y, 50.0, 100.0, 100.0);
+                double outSlow = TriangularMembership(y, 0.0, 0.0, 40.0);
+                double outMed = TriangularMembership(y, 20.0, 50.0, 70.0);
+                double outFast = TriangularMembership(y, 60.0, 100.0, 100.0);
 
 
                 // Implication: Clip each output fuzzy set by its rule firing strength using Min
-                double clippedSlow = Math.Min(rule3, outSlow);
+                double clippedSlow = Math.Min(rule3_strength, outSlow);
                 double clippedMed = Math.Min(rule2_strength, outMed);
                 double clippedFast = Math.Min(rule1_strength, outFast);
 
@@ -102,21 +126,17 @@ namespace FuzzyLogicAct
                 double aggregatedY = Math.Max(clippedSlow, Math.Max(clippedMed, clippedFast));
 
                 // Accumulate for Center of Gravity (Centroid) calculation:
-                // Centroid = Integral(y * u(y)) / Integral(u(y))sumNumerator += y * aggregatedY * step;
-
+                // Centroid = Integral(y * u(y)) / Integral(u(y))
+                sumNumerator += y * aggregatedY * step;
                 sumDenominator += aggregatedY * step;
-
-                double crispOutput = 0.0;
-
-                if (sumDenominator > 0.0)
-                { 
-                    crispOutput = sumNumerator / sumDenominator;
-                }
-
-                // print results
-                Console.WriteLine(" == OUTPUT OF MAMDANI METHOD == ");
-                Console.WriteLine(crispOutput);
             }
+
+            double crispOutput = 0.0;
+            if (sumDenominator > 0.0) crispOutput = sumNumerator / sumDenominator;
+
+            // print results
+            Console.WriteLine(" == OUTPUT OF MAMDANI METHOD == ");
+            Console.WriteLine(crispOutput);
         }
 
         // x = input val, a = left foot, b = peak, c = right foot
