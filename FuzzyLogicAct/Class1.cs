@@ -110,7 +110,7 @@ namespace FuzzyLogicAct
             for (double y = 0.0; y <= 100.0; y += step)
             {
 
-                // Define output membership functions for Fan Speed (Slow, Medium, Fast)
+                // Define output membership functions for Water Pump (Slow, Medium, Fast)
                 double outSlow = TriangularMembership(y, 0.0, 0.0, 40.0);
                 double outMed = TriangularMembership(y, 20.0, 50.0, 70.0);
                 double outFast = TriangularMembership(y, 60.0, 100.0, 100.0);
