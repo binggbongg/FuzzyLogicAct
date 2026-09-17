@@ -25,9 +25,14 @@ namespace FuzzyLogicAct
             double sunlightInput = double.Parse(textBoxSunlight.Text);
             double airTempInput = double.Parse(textBoxAirTemp.Text);
 
-            //SugenoMethod(soilMoistureInput, sunlightInput, airTempInput);
+            //SugenoMethod(soilMoistureInput, sunlightInput, airTempInput, this);
 
-            //richTextBoxOuput.Text = $"Soil Moisture: {soilMoistureInput}%\nSunlight: {sunlightInput}\nAir Temperature: {airTempInput}°C\n\n== OUTPUT OF SUGENO METHOD ==\n{SugenoMethod(soilMoistureInput, sunlightInput, airTempInput)}";
+            Console.WriteLine("== USER INPUT == ");
+            Console.WriteLine($"Soil Moisture: {soilMoistureInput}%");
+            Console.WriteLine($"Sunlight: {sunlightInput}");
+            Console.WriteLine($"Air Temperature: {airTempInput}°C");
+
+            richTextBoxOuput.Text = $"Soil Moisture: {soilMoistureInput}%\nSunlight: {sunlightInput}\nAir Temperature: {airTempInput}°C\n\n== OUTPUT OF SUGENO METHOD ==\n{SugenoMethod(soilMoistureInput, sunlightInput, airTempInput)}";
         }
 
         private void btnMamdani_Click(object sender, EventArgs e)
@@ -38,7 +43,12 @@ namespace FuzzyLogicAct
 
             //MamdaniMethod(soilMoistureInput, sunlightInput, airTempInput);
 
-            //richTextBoxOuput.Text = $"Soil Moisture: {soilMoistureInput}%\nSunlight: {sunlightInput}\nAir Temperature: {airTempInput}°C\n\n== OUTPUT OF MAMDANI METHOD ==\n{MamdaniMethod(soilMoistureInput, sunlightInput, airTempInput)}";
+            Console.WriteLine("== USER INPUT == ");
+            Console.WriteLine($"Soil Moisture: {soilMoistureInput}%");
+            Console.WriteLine($"Sunlight: {sunlightInput}");
+            Console.WriteLine($"Air Temperature: {airTempInput}°C");
+
+            richTextBoxOuput.Text = $"Soil Moisture: {soilMoistureInput}%\nSunlight: {sunlightInput}\nAir Temperature: {airTempInput}°C\n\n== OUTPUT OF MAMDANI METHOD ==\n{MamdaniMethod(soilMoistureInput, sunlightInput, airTempInput)}";
         }
 
         //private void label1_Click(object sender, EventArgs e)

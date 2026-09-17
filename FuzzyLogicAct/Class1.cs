@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,39 +22,35 @@ namespace FuzzyLogicAct
 
             // might transfer this line to after the user presses the button
 
-            Console.WriteLine("== USER INPUT == ");
-            Console.WriteLine($"Soil Moisture: {soilMoisture}%");
-            Console.WriteLine($"Sunlight: {sunlightInput}");
-            Console.WriteLine($"Air Temperature: {airTempInput}°C");
-
             //SugenoMethod(soilMoisture, sunlightInput, airTempInput);
         }
 
-        public static void SugenoMethod(double soilMoisture, double lightIntensity, double airTemperature)
+        public static double SugenoMethod(double soil_moisture, double light_intensity, double air_temp)
         {
             // 1. Fuzzification
             // Soil Moisture (Scale: 0 to 40)
-            double lowMoisture = TriangularMembership(soil_moisture, 0, 15, 20);
+            double lowMoisture = TriangularMembership(soil_moisture, 0, 0, 20);
             double medMoisture = TriangularMembership(soil_moisture, 15, 25, 35);
-            double highMoisture = TriangularMembership(soil_moisture, 30, 35, 40);
+            double highMoisture = TriangularMembership(soil_moisture, 30, 40, 40);
 
             // Light Intensity (Scale: 0 to 100)
-            double lowIntensity = TriangularMembership(light_intensity, 0, 20, 40);
+            double lowIntensity = TriangularMembership(light_intensity, 0, 0, 40);
             double medIntensity = TriangularMembership(light_intensity, 30, 50, 75);
-            double highIntensity = TriangularMembership(light_intensity, 60, 85, 100);
+            double highIntensity = TriangularMembership(light_intensity, 60, 100, 100);
 
             // Air Temperature (Scale: 0 to 50°C)
-            double lowTemp = TriangularMembership(air_temp, 10, 18, 25);
+            double lowTemp = TriangularMembership(air_temp, 0, 10, 25);
             double medTemp = TriangularMembership(air_temp, 20, 28, 36);
-            double highTemp = TriangularMembership(air_temp, 30, 40, 50);
+            double highTemp = TriangularMembership(air_temp, 30, 50, 50);
 
             // 2. rule evaluation for water pump / irrigation
             // high demand: if soil moisture is low OR (temp is high AND light is High)
-            double rule1_strength = Math.Max(lowMoisture, Math.Min(highTemp, highIntensity);
+            double rule1_strength = Math.Max(lowMoisture, Math.Min(highTemp, highIntensity));
             // moderate demand: if soil moisture is med and temp medium
             double rule2_strength = Math.Min(medMoisture, medTemp);
             // low demand: is soil moisture is high or (temp is low and light is low)
-            double rule3_strength = Math.Max(highMoisture, Math.Min(lowTemp, lowIntensity);
+            double rule3_strength = Math.Max(highMoisture, Math.Min(lowTemp, lowIntensity));
+            //double rule3_strength = Math.Max(highMoisture, Math.Min(lowTemp, lowIntensity));
 
             // 3. defuzzification (weighted average)
             double cSlow = 10.0;
@@ -70,33 +66,34 @@ namespace FuzzyLogicAct
             //print here results
             Console.WriteLine(" == OUTPUT OF SUGENO METHOD == ");
             Console.WriteLine(crispOutput);
+            return crispOutput;
         }
 
-        public static void MamdaniMethod(double soilMoisture, double lightIntensity, double airTemperature)
+        public static double MamdaniMethod(double soil_moisture, double light_intensity, double air_temp)
         {
             // 1. Fuzzification
             // Soil Moisture (Scale: 0 to 40)
-            double lowMoisture = TriangularMembership(soil_moisture, 0, 15, 20);
+            double lowMoisture = TriangularMembership(soil_moisture, 0, 0, 20);
             double medMoisture = TriangularMembership(soil_moisture, 15, 25, 35);
-            double highMoisture = TriangularMembership(soil_moisture, 30, 35, 40);
+            double highMoisture = TriangularMembership(soil_moisture, 30, 40, 40);
 
             // Light Intensity (Scale: 0 to 100)
-            double lowIntensity = TriangularMembership(light_intensity, 0, 20, 40);
+            double lowIntensity = TriangularMembership(light_intensity, 0, 0, 40);
             double medIntensity = TriangularMembership(light_intensity, 30, 50, 75);
-            double highIntensity = TriangularMembership(light_intensity, 60, 85, 100);
+            double highIntensity = TriangularMembership(light_intensity, 60, 100, 100);
 
             // Air Temperature (Scale: 0 to 50°C)
-            double lowTemp = TriangularMembership(air_temp, 10, 18, 25);
+            double lowTemp = TriangularMembership(air_temp, 0, 10, 25);
             double medTemp = TriangularMembership(air_temp, 20, 28, 36);
-            double highTemp = TriangularMembership(air_temp, 30, 40, 50);
+            double highTemp = TriangularMembership(air_temp, 30, 50, 50);
 
             // 2. rule evaluation for water pump / irrigation
             // high demand: if soil moisture is low OR (temp is high AND light is High)
-            double rule1_strength = Math.Max(lowMoisture, Math.Min(highTemp, highIntensity);
+            double rule1_strength = Math.Max(lowMoisture, Math.Min(highTemp, highIntensity));
             // moderate demand: if soil moisture is med and temp medium
             double rule2_strength = Math.Min(medMoisture, medTemp);
             // low demand: is soil moisture is high or (temp is low and light is low)
-            double rule3_strength = Math.Max(highMoisture, Math.Min(lowTemp, lowIntensity);
+            double rule3_strength = Math.Max(highMoisture, Math.Min(lowTemp, lowIntensity));
 
             // 3. Mamdani implication, aggregation, and defuzzification
             // slow: 0% to 40%
@@ -104,7 +101,7 @@ namespace FuzzyLogicAct
             // high: 60%, peak 100%
 
             double sumNumerator = 0.0;
-            double sumDenominator = 0.0
+            double sumDenominator = 0.0;
             double step = 0.5; // Integration step size for accuracy
 
             for (double y = 0.0; y <= 100.0; y += step)
@@ -137,13 +134,17 @@ namespace FuzzyLogicAct
             // print results
             Console.WriteLine(" == OUTPUT OF MAMDANI METHOD == ");
             Console.WriteLine(crispOutput);
+
+            return crispOutput;
         }
 
         // x = input val, a = left foot, b = peak, c = right foot
         static double TriangularMembership(double x, double a, double b, double c)
         {
-            if (x <= a || x >= c) return 0.0;
+            if (a == b && x <= b) return 1.0;              // Left shoulder
+            if (b == c && x >= b) return 1.0;              // Right shoulder
             if (x == b) return 1.0;
+            if (x <= a || x >= c) return 0.0;
             if (x > a && x < b) return (x - a) / (b - a);
 
             return (c - x) / (c - b);
