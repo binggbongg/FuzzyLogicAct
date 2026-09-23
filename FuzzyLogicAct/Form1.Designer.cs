@@ -81,7 +81,7 @@ namespace FuzzyLogicAct
             this.groupBoxInputs.Size = new System.Drawing.Size(380, 310);
             this.groupBoxInputs.TabIndex = 0;
             this.groupBoxInputs.TabStop = false;
-            this.groupBoxInputs.Text = "Environmental Sensor Inputs";
+            this.groupBoxInputs.Text = "Environmental Sensor Inputs (Cebu Context)";
             // 
             // labelSoilTitle
             // 
@@ -89,19 +89,20 @@ namespace FuzzyLogicAct
             this.labelSoilTitle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelSoilTitle.Location = new System.Drawing.Point(15, 30);
             this.labelSoilTitle.Name = "labelSoilTitle";
-            this.labelSoilTitle.Size = new System.Drawing.Size(126, 15);
+            this.labelSoilTitle.Size = new System.Drawing.Size(132, 15);
             this.labelSoilTitle.TabIndex = 0;
-            this.labelSoilTitle.Text = "Soil Moisture (0 - 40%)";
+            this.labelSoilTitle.Text = "Soil Moisture (0 - 100%)";
             // 
             // trackBarSoilMoisture
             // 
             this.trackBarSoilMoisture.Location = new System.Drawing.Point(15, 50);
-            this.trackBarSoilMoisture.Maximum = 40;
+            this.trackBarSoilMoisture.Minimum = 0;
+            this.trackBarSoilMoisture.Maximum = 100;
             this.trackBarSoilMoisture.Name = "trackBarSoilMoisture";
             this.trackBarSoilMoisture.Size = new System.Drawing.Size(250, 45);
             this.trackBarSoilMoisture.TabIndex = 1;
-            this.trackBarSoilMoisture.TickFrequency = 5;
-            this.trackBarSoilMoisture.Value = 20;
+            this.trackBarSoilMoisture.TickFrequency = 10;
+            this.trackBarSoilMoisture.Value = 50;
             this.trackBarSoilMoisture.Scroll += new System.EventHandler(this.trackBarSoilMoisture_Scroll);
             // 
             // lblSoilVal
@@ -112,7 +113,7 @@ namespace FuzzyLogicAct
             this.lblSoilVal.Name = "lblSoilVal";
             this.lblSoilVal.Size = new System.Drawing.Size(34, 15);
             this.lblSoilVal.TabIndex = 2;
-            this.lblSoilVal.Text = "20 %";
+            this.lblSoilVal.Text = "50 %";
             // 
             // lblSoilClass
             // 
@@ -121,7 +122,7 @@ namespace FuzzyLogicAct
             this.lblSoilClass.ForeColor = System.Drawing.Color.DarkGreen;
             this.lblSoilClass.Location = new System.Drawing.Point(275, 72);
             this.lblSoilClass.Name = "lblSoilClass";
-            this.lblSoilClass.Size = new System.Drawing.Size(95, 13);
+            this.lblSoilClass.Size = new System.Drawing.Size(103, 13);
             this.lblSoilClass.TabIndex = 3;
             this.lblSoilClass.Text = "[Medium / Optimal]";
             // 
@@ -131,13 +132,14 @@ namespace FuzzyLogicAct
             this.labelSunTitle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelSunTitle.Location = new System.Drawing.Point(15, 115);
             this.labelSunTitle.Name = "labelSunTitle";
-            this.labelSunTitle.Size = new System.Drawing.Size(161, 15);
+            this.labelSunTitle.Size = new System.Drawing.Size(170, 15);
             this.labelSunTitle.TabIndex = 4;
-            this.labelSunTitle.Text = "Sunlight Intensity (0 - 100 lx)";
+            this.labelSunTitle.Text = "Sunlight Intensity (0 - 100 klx)";
             // 
             // trackBarSunlight
             // 
             this.trackBarSunlight.Location = new System.Drawing.Point(15, 135);
+            this.trackBarSunlight.Minimum = 0;
             this.trackBarSunlight.Maximum = 100;
             this.trackBarSunlight.Name = "trackBarSunlight";
             this.trackBarSunlight.Size = new System.Drawing.Size(250, 45);
@@ -152,9 +154,9 @@ namespace FuzzyLogicAct
             this.lblSunVal.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSunVal.Location = new System.Drawing.Point(275, 137);
             this.lblSunVal.Name = "lblSunVal";
-            this.lblSunVal.Size = new System.Drawing.Size(21, 15);
+            this.lblSunVal.Size = new System.Drawing.Size(43, 15);
             this.lblSunVal.TabIndex = 6;
-            this.lblSunVal.Text = "50";
+            this.lblSunVal.Text = "50 klx";
             // 
             // lblSunClass
             // 
@@ -163,9 +165,9 @@ namespace FuzzyLogicAct
             this.lblSunClass.ForeColor = System.Drawing.Color.Goldenrod;
             this.lblSunClass.Location = new System.Drawing.Point(275, 157);
             this.lblSunClass.Name = "lblSunClass";
-            this.lblSunClass.Size = new System.Drawing.Size(102, 13);
+            this.lblSunClass.Size = new System.Drawing.Size(107, 13);
             this.lblSunClass.TabIndex = 7;
-            this.lblSunClass.Text = "[Medium / Moderate]";
+            this.lblSunClass.Text = "[Medium / Diffused]";
             // 
             // labelTempTitle
             // 
@@ -173,19 +175,20 @@ namespace FuzzyLogicAct
             this.labelTempTitle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelTempTitle.Location = new System.Drawing.Point(15, 205);
             this.labelTempTitle.Name = "labelTempTitle";
-            this.labelTempTitle.Size = new System.Drawing.Size(155, 15);
+            this.labelTempTitle.Size = new System.Drawing.Size(161, 15);
             this.labelTempTitle.TabIndex = 8;
-            this.labelTempTitle.Text = "Air Temperature (0 - 50 °C)";
+            this.labelTempTitle.Text = "Air Temperature (20 - 45 °C)";
             // 
             // trackBarAirTemp
             // 
             this.trackBarAirTemp.Location = new System.Drawing.Point(15, 225);
-            this.trackBarAirTemp.Maximum = 50;
+            this.trackBarAirTemp.Minimum = 20;
+            this.trackBarAirTemp.Maximum = 45;
             this.trackBarAirTemp.Name = "trackBarAirTemp";
             this.trackBarAirTemp.Size = new System.Drawing.Size(250, 45);
             this.trackBarAirTemp.TabIndex = 9;
             this.trackBarAirTemp.TickFrequency = 5;
-            this.trackBarAirTemp.Value = 25;
+            this.trackBarAirTemp.Value = 30;
             this.trackBarAirTemp.Scroll += new System.EventHandler(this.trackBarAirTemp_Scroll);
             // 
             // lblTempVal
@@ -196,23 +199,22 @@ namespace FuzzyLogicAct
             this.lblTempVal.Name = "lblTempVal";
             this.lblTempVal.Size = new System.Drawing.Size(37, 15);
             this.lblTempVal.TabIndex = 10;
-            this.lblTempVal.Text = "25 °C";
+            this.lblTempVal.Text = "30 °C";
             // 
             // lblTempClass
             // 
             this.lblTempClass.AutoSize = true;
             this.lblTempClass.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTempClass.ForeColor = System.Drawing.Color.Teal;
+            this.lblTempClass.ForeColor = System.Drawing.Color.DarkGreen;
             this.lblTempClass.Location = new System.Drawing.Point(275, 247);
             this.lblTempClass.Name = "lblTempClass";
-            this.lblTempClass.Size = new System.Drawing.Size(91, 13);
+            this.lblTempClass.Size = new System.Drawing.Size(133, 13);
             this.lblTempClass.TabIndex = 11;
-            this.lblTempClass.Text = "[Medium / Normal]";
+            this.lblTempClass.Text = "[Warm / Daytime Normal]";
             // 
             // groupBoxMethod
             // 
             this.groupBoxMethod.Controls.Add(this.btnSugeno);
-            //this.groupBoxMethod.Controls.Add(this.btnMamdani);
             this.groupBoxMethod.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBoxMethod.Location = new System.Drawing.Point(16, 335);
             this.groupBoxMethod.Name = "groupBoxMethod";
@@ -224,9 +226,9 @@ namespace FuzzyLogicAct
             // btnSugeno
             // 
             this.btnSugeno.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSugeno.Location = new System.Drawing.Point(25, 28);
+            this.btnSugeno.Location = new System.Drawing.Point(110, 28);
             this.btnSugeno.Name = "btnSugeno";
-            this.btnSugeno.Size = new System.Drawing.Size(145, 38);
+            this.btnSugeno.Size = new System.Drawing.Size(160, 38);
             this.btnSugeno.TabIndex = 0;
             this.btnSugeno.Text = "Calculate Sugeno";
             this.btnSugeno.UseVisualStyleBackColor = true;
@@ -387,4 +389,3 @@ namespace FuzzyLogicAct
         private System.Windows.Forms.PictureBox pictureBoxSunflower;
     }
 }
-

@@ -75,12 +75,12 @@ namespace FuzzyLogicAct
 
             // Classifications based on Soil Moisture (0 to 40)
             // Low [0, 0, 20], Med [15, 25, 35], High [30, 40, 40]
-            if (val <= 18)
+            if (val <= 35)
             {
                 lblSoilClass.Text = "[Low / Dry]";
                 lblSoilClass.ForeColor = Color.Firebrick;
             }
-            else if (val <= 32)
+            else if (val <= 70)
             {
                 lblSoilClass.Text = "[Medium / Optimal]";
                 lblSoilClass.ForeColor = Color.DarkGreen;
@@ -99,7 +99,7 @@ namespace FuzzyLogicAct
 
             // Classifications based on Light Intensity (0 to 100)
             // Low [0, 0, 40], Med [30, 50, 75], High [60, 100, 100]
-            if (val <= 35)
+            if (val <= 25)
             {
                 lblSunClass.Text = "[Low / Dim]";
                 lblSunClass.ForeColor = Color.DimGray;
@@ -123,12 +123,12 @@ namespace FuzzyLogicAct
 
             // Classifications based on Air Temp (0 to 50°C)
             // Low [0, 10, 25], Med [20, 28, 36], High [30, 50, 50]
-            if (val <= 18)
+            if (val <= 26)
             {
                 lblTempClass.Text = "[Low / Cool]";
                 lblTempClass.ForeColor = Color.DodgerBlue;
             }
-            else if (val <= 32)
+            else if (val <= 33)
             {
                 lblTempClass.Text = "[Medium / Normal]";
                 lblTempClass.ForeColor = Color.DarkGreen;
@@ -166,19 +166,24 @@ namespace FuzzyLogicAct
             string wateringStatus;
             Color statusColor;
 
-            if (outputVal < 35.0)
+            if (outputVal <= 5.0)
             {
-                wateringStatus = "SLOW (Gentle Watering)";
+                wateringStatus = "OFF (Root Rot Protection)";
+                statusColor = Color.SteelBlue;
+            }
+            else if (outputVal < 35.0)
+            {
+                wateringStatus = "SLOW (Gentle / Minimal)";
                 statusColor = Color.DarkSeaGreen;
             }
-            else if (outputVal <= 65.0)
+            else if (outputVal <= 70.0)
             {
-                wateringStatus = "MEDIUM (Standard Watering)";
+                wateringStatus = "MEDIUM (Standard / Maintenance)";
                 statusColor = Color.DarkOrange;
             }
             else
             {
-                wateringStatus = "HIGH (Heavy Watering)";
+                wateringStatus = "HIGH (Heavy Evaporation / Drought)";
                 statusColor = Color.Firebrick;
             }
 

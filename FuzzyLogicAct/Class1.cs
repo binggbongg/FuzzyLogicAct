@@ -28,39 +28,50 @@ namespace FuzzyLogicAct
         public static double SugenoMethod(double soil_moisture, double light_intensity, double air_temp)
         {
             // 1. Fuzzification
-            // Soil Moisture (Scale: 0 to 40)
-            double lowMoisture = TriangularMembership(soil_moisture, 0, 0, 20);
-            double medMoisture = TriangularMembership(soil_moisture, 15, 25, 35);
-            double highMoisture = TriangularMembership(soil_moisture, 30, 40, 40);
+            // Soil Moisture (Scale: 0 to 100%)
+            double lowMoisture = TriangularMembership(soil_moisture, 0, 0, 40);
+            double medMoisture = TriangularMembership(soil_moisture, 30, 55, 75);
+            double highMoisture = TriangularMembership(soil_moisture, 65, 100, 100);
 
-            // Light Intensity (Scale: 0 to 100)
-            double lowIntensity = TriangularMembership(light_intensity, 0, 0, 40);
-            double medIntensity = TriangularMembership(light_intensity, 30, 50, 75);
+            // Light Intensity (Scale: 0 to 100 klx)
+            double lowIntensity = TriangularMembership(light_intensity, 0, 0, 30);
+            double medIntensity = TriangularMembership(light_intensity, 20, 50, 75);
             double highIntensity = TriangularMembership(light_intensity, 60, 100, 100);
 
-            // Air Temperature (Scale: 0 to 50°C)
-            double lowTemp = TriangularMembership(air_temp, 0, 10, 25);
-            double medTemp = TriangularMembership(air_temp, 20, 28, 36);
-            double highTemp = TriangularMembership(air_temp, 30, 50, 50);
+            // Air Temperature (Scale: 20 to 45°C)
+            double lowTemp = TriangularMembership(air_temp, 20, 20, 28);
+            double medTemp = TriangularMembership(air_temp, 26, 31, 36);
+            double highTemp = TriangularMembership(air_temp, 33, 42, 45);
 
             // 2. rule evaluation for water pump / irrigation
-            // high demand: if soil moisture is low OR (temp is high AND light is High)
-            double rule1_strength = Math.Max(lowMoisture, Math.Min(highTemp, highIntensity));
-            // moderate demand: if soil moisture is med and temp medium
-            double rule2_strength = Math.Min(medMoisture, medTemp);
-            // low demand: is soil moisture is high or (temp is low and light is low)
-            double rule3_strength = Math.Max(highMoisture, Math.Min(lowTemp, lowIntensity));
-            //double rule3_strength = Math.Max(highMoisture, Math.Min(lowTemp, lowIntensity));
+
+            // Rule 1: Soil is dry -> heavy watering
+            double rule1 = lowMoisture;
+
+            // Rule 2: Moderate soil, but high tropical heat/sun -> increase watering
+            double rule2 = Math.Min(medMoisture, Math.Max(highTemp, highIntensity));
+
+            // Rule 3: Moderate soil and normal warm daytime -> steady watering
+            double rule3 = Math.Min(medMoisture, medTemp);
+
+            // Rule 4: Moderate soil during cool night / overcast dawn -> minimal watering
+            double rule4 = Math.Max(medMoisture, Math.Min(lowTemp, lowIntensity));
+
+            // Rule 5: Soil is already saturated -> cutoff to avoid root rot
+            double rule5 = highMoisture;
+
 
             // 3. defuzzification (weighted average)
-            double cSlow = 10.0;
-            double cMed = 50.0;
             double cFast = 100.0;
+            double cMedHi = 75.0;
+            double cMed = 50.0;
+            double cSlow = 15.0;
+            double cStop = 0.0;
 
-            double numerator = (rule3_strength * cSlow) + (rule2_strength * cMed) + (rule1_strength * cFast);
-            double denominator = rule3_strength + rule2_strength + rule1_strength;
+            double numerator = (rule1 * cFast) + (rule2 * cMedHi) + (rule3 * cMed) + (rule4 * cSlow) + (rule5 * cStop);
+            double denominator = rule1 + rule2 + rule3 + rule4 + rule5;
 
-            double crispOutput = 0.0;
+            double crispOutput = 50.0;
             if (denominator > 0) crispOutput = numerator / denominator;
 
             //print here results
