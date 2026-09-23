@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -19,76 +19,193 @@ namespace FuzzyLogicAct
             InitializeComponent();
         }
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            UpdateSoilDisplay();
+            UpdateSunlightDisplay();
+            UpdateAirTempDisplay();
+            LoadSunflowerImage();
+        }
+
+        private void LoadSunflowerImage()
+        {
+            try
+            {
+                // Look for Sunflower2009HD.png in app directory or project directory
+                string appDir = AppDomain.CurrentDomain.BaseDirectory;
+                string imgPath = System.IO.Path.Combine(appDir, "Sunflower2009HD.png");
+
+                if (!System.IO.File.Exists(imgPath))
+                {
+                    // Fallback to project root directory
+                    string projectDir = System.IO.Path.GetFullPath(System.IO.Path.Combine(appDir, @"..\.."));
+                    imgPath = System.IO.Path.Combine(projectDir, "Sunflower2009HD.png");
+                }
+
+                if (System.IO.File.Exists(imgPath))
+                {
+                    pictureBoxSunflower.Image = Image.FromFile(imgPath);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Could not load sunflower image: " + ex.Message);
+            }
+        }
+
+        private void trackBarSoilMoisture_Scroll(object sender, EventArgs e)
+        {
+            UpdateSoilDisplay();
+        }
+
+        private void trackBarSunlight_Scroll(object sender, EventArgs e)
+        {
+            UpdateSunlightDisplay();
+        }
+
+        private void trackBarAirTemp_Scroll(object sender, EventArgs e)
+        {
+            UpdateAirTempDisplay();
+        }
+
+        private void UpdateSoilDisplay()
+        {
+            int val = trackBarSoilMoisture.Value;
+            lblSoilVal.Text = $"{val} %";
+
+            // Classifications based on Soil Moisture (0 to 40)
+            // Low [0, 0, 20], Med [15, 25, 35], High [30, 40, 40]
+            if (val <= 18)
+            {
+                lblSoilClass.Text = "[Low / Dry]";
+                lblSoilClass.ForeColor = Color.Firebrick;
+            }
+            else if (val <= 32)
+            {
+                lblSoilClass.Text = "[Medium / Optimal]";
+                lblSoilClass.ForeColor = Color.DarkGreen;
+            }
+            else
+            {
+                lblSoilClass.Text = "[High / Wet]";
+                lblSoilClass.ForeColor = Color.SteelBlue;
+            }
+        }
+
+        private void UpdateSunlightDisplay()
+        {
+            int val = trackBarSunlight.Value;
+            lblSunVal.Text = $"{val} lx";
+
+            // Classifications based on Light Intensity (0 to 100)
+            // Low [0, 0, 40], Med [30, 50, 75], High [60, 100, 100]
+            if (val <= 35)
+            {
+                lblSunClass.Text = "[Low / Dim]";
+                lblSunClass.ForeColor = Color.DimGray;
+            }
+            else if (val <= 65)
+            {
+                lblSunClass.Text = "[Medium / Moderate]";
+                lblSunClass.ForeColor = Color.Goldenrod;
+            }
+            else
+            {
+                lblSunClass.Text = "[High / Bright]";
+                lblSunClass.ForeColor = Color.DarkOrange;
+            }
+        }
+
+        private void UpdateAirTempDisplay()
+        {
+            int val = trackBarAirTemp.Value;
+            lblTempVal.Text = $"{val} °C";
+
+            // Classifications based on Air Temp (0 to 50°C)
+            // Low [0, 10, 25], Med [20, 28, 36], High [30, 50, 50]
+            if (val <= 18)
+            {
+                lblTempClass.Text = "[Low / Cool]";
+                lblTempClass.ForeColor = Color.DodgerBlue;
+            }
+            else if (val <= 32)
+            {
+                lblTempClass.Text = "[Medium / Normal]";
+                lblTempClass.ForeColor = Color.DarkGreen;
+            }
+            else
+            {
+                lblTempClass.Text = "[High / Hot]";
+                lblTempClass.ForeColor = Color.Crimson;
+            }
+        }
+
         private void btnSugeno_Click(object sender, EventArgs e)
         {
-            double soilMoistureInput = double.Parse(textBoxSoilMoisture.Text);
-            double sunlightInput = double.Parse(textBoxSunlight.Text);
-            double airTempInput = double.Parse(textBoxAirTemp.Text);
+            double soilMoistureInput = trackBarSoilMoisture.Value;
+            double sunlightInput = trackBarSunlight.Value;
+            double airTempInput = trackBarAirTemp.Value;
 
-            //SugenoMethod(soilMoistureInput, sunlightInput, airTempInput, this);
-
-            Console.WriteLine("== USER INPUT == ");
-            Console.WriteLine($"Soil Moisture: {soilMoistureInput}%");
-            Console.WriteLine($"Sunlight: {sunlightInput}");
-            Console.WriteLine($"Air Temperature: {airTempInput}°C");
-
-            richTextBoxOuput.Text = $"Soil Moisture: {soilMoistureInput}%\nSunlight: {sunlightInput}\nAir Temperature: {airTempInput}°C\n\n== OUTPUT OF SUGENO METHOD ==\n{SugenoMethod(soilMoistureInput, sunlightInput, airTempInput)}";
+            double result = SugenoMethod(soilMoistureInput, sunlightInput, airTempInput);
+            UpdateOutputDisplay("Sugeno Method", soilMoistureInput, sunlightInput, airTempInput, result);
         }
 
         private void btnMamdani_Click(object sender, EventArgs e)
         {
-            double soilMoistureInput = double.Parse(textBoxSoilMoisture.Text);
-            double sunlightInput = double.Parse(textBoxSunlight.Text);
-            double airTempInput = double.Parse(textBoxAirTemp.Text);
+            double soilMoistureInput = trackBarSoilMoisture.Value;
+            double sunlightInput = trackBarSunlight.Value;
+            double airTempInput = trackBarAirTemp.Value;
 
-            //MamdaniMethod(soilMoistureInput, sunlightInput, airTempInput);
-
-            Console.WriteLine("== USER INPUT == ");
-            Console.WriteLine($"Soil Moisture: {soilMoistureInput}%");
-            Console.WriteLine($"Sunlight: {sunlightInput}");
-            Console.WriteLine($"Air Temperature: {airTempInput}°C");
-
-            richTextBoxOuput.Text = $"Soil Moisture: {soilMoistureInput}%\nSunlight: {sunlightInput}\nAir Temperature: {airTempInput}°C\n\n== OUTPUT OF MAMDANI METHOD ==\n{MamdaniMethod(soilMoistureInput, sunlightInput, airTempInput)}";
+            double result = MamdaniMethod(soilMoistureInput, sunlightInput, airTempInput);
+            UpdateOutputDisplay("Mamdani Method", soilMoistureInput, sunlightInput, airTempInput, result);
         }
 
-        //private void label1_Click(object sender, EventArgs e)
-        //{
-
-        //}
-
-        //private void label1_Click_1(object sender, EventArgs e)
-        //{
-
-        //}
-
-        //private void label2_Click(object sender, EventArgs e)
-        //{
-
-        //}
-
-        //private void label4_Click(object sender, EventArgs e)
-        //{
-
-        //}
-
-        private void textBoxSoilMoisture_TextChanged(object sender, EventArgs e)
+        private void UpdateOutputDisplay(string methodName, double soil, double sun, double temp, double outputVal)
         {
+            // Update Watering Indicator (Slow, Medium, High)
+            string wateringStatus;
+            Color statusColor;
 
-        }
+            if (outputVal < 35.0)
+            {
+                wateringStatus = "SLOW (Gentle Watering)";
+                statusColor = Color.DarkSeaGreen;
+            }
+            else if (outputVal <= 65.0)
+            {
+                wateringStatus = "MEDIUM (Standard Watering)";
+                statusColor = Color.DarkOrange;
+            }
+            else
+            {
+                wateringStatus = "HIGH (Heavy Watering)";
+                statusColor = Color.Firebrick;
+            }
 
-        private void textBoxSunlight_TextChanged(object sender, EventArgs e)
-        {
+            lblWateringStatus.Text = wateringStatus;
+            lblWateringStatus.ForeColor = statusColor;
+            lblCrispVal.Text = $"Irrigation Output: {outputVal:F2} %";
 
-        }
+            // Update Progress Bar
+            int progressVal = (int)Math.Round(Math.Max(0.0, Math.Min(100.0, outputVal)));
+            progressBarWatering.Value = progressVal;
 
-        private void textBoxAirTemp_TextChanged(object sender, EventArgs e)
-        {
+            // Update Text Details
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"=== {methodName.ToUpper()} RESULTS ===");
+            sb.AppendLine($"Timestamp: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+            sb.AppendLine();
+            sb.AppendLine("INPUT SENSORS:");
+            sb.AppendLine($" • Soil Moisture  : {soil:F1}% -> {lblSoilClass.Text}");
+            sb.AppendLine($" • Sunlight       : {sun:F1} lx -> {lblSunClass.Text}");
+            sb.AppendLine($" • Air Temperature: {temp:F1} °C -> {lblTempClass.Text}");
+            sb.AppendLine();
+            sb.AppendLine("OUTPUT RECOMMENDATION:");
+            sb.AppendLine($" • Plant Watering : {wateringStatus}");
+            sb.AppendLine($" • Crisp Output   : {outputVal:F2}%");
+            sb.AppendLine("========================================");
 
-        }
-
-        private void richTextBoxOuput_TextChanged(object sender, EventArgs e)
-        {
-
+            richTextBoxOuput.Text = sb.ToString();
         }
     }
 }
